@@ -24,9 +24,6 @@ class Vector2:
     def copy(self):
         return self.__class__(self.x, self.y)
 
-    def xy(self):
-        return (self.x, self.y)
-
     def __add__(self, rhs):
         return self.__class__(self.x + rhs.x, self.y + rhs.y)
 
@@ -66,6 +63,10 @@ class Vector2:
     def __getattr__(self, key):
         if key == 'width':  return getattr(self, 'x')
         if key == 'height': return getattr(self, 'y')
+
+        # swizzle
+        if key == 'xy': return (getattr(self, 'x'), getattr(self, 'y'))
+
         try:
             return self.__dict__[key]
         except:
@@ -104,12 +105,6 @@ class Vector3:
     def copy(self):
         return self.__class__(self.x, self.y, self.z)
 
-    def xyz(self):
-        return (self.x, self.y, self.z)
-
-    def xy(self):
-        return (self.x, self.y)
-
     def __add__(self, rhs):
         return self.__class__(self.x + rhs.x, self.y + rhs.y, self.z+rhs.z)
 
@@ -138,6 +133,18 @@ class Vector3:
 
     def __getitem__(self, index):
         return [self.x, self.y, self.z][index]
+
+    def __getattr__(self, key):
+        # swizzle
+        if key == 'xy':  return (getattr(self, 'x'), getattr(self, 'y'))
+        if key == 'xz':  return (getattr(self, 'x'), getattr(self, 'z'))
+        if key == 'yz':  return (getattr(self, 'y'), getattr(self, 'z'))
+        if key == 'xyz': return (getattr(self, 'x'), getattr(self, 'y'), getattr(self, 'z'))
+
+        try:
+            return self.__dict__[key]
+        except:
+            raise AttributeError, '%s has no attribute %s' % (self.__class__.__name__, key)
 
 # ------------------------------------------------------------------------------
 #
@@ -187,7 +194,7 @@ if __name__ == '__main__':
 
         def test_swizzle(self):
             v = Vector2((1.0, 2.0))
-            x,y = v.xy()
+            x,y = v.xy
             self.assertEqual(x, 1.0)
             self.assertEqual(y, 2.0)
 
@@ -288,10 +295,20 @@ if __name__ == '__main__':
 
         def test_swizzle(self):
             v = Vector3((1.0, 2.0, 3.0))
-            x,y = v.xy()
+
+            x,y = v.xy
             self.assertEqual(x, 1.0)
             self.assertEqual(y, 2.0)
-            x,y,z = v.xyz()
+
+            x,z = v.xz
+            self.assertEqual(x, 1.0)
+            self.assertEqual(z, 3.0)
+
+            y,z = v.yz
+            self.assertEqual(y, 2.0)
+            self.assertEqual(z, 3.0)
+
+            x,y,z = v.xyz
             self.assertEqual(x, 1.0)
             self.assertEqual(y, 2.0)
             self.assertEqual(z, 3.0)
