@@ -21,10 +21,6 @@ class Vector2:
             self.x = self.__class__.datatype(x)
             self.y = self.__class__.datatype(y)
 
-        # since Vector2 is commonly used to describe resolution these aliases is used:
-        self.width = self.x
-        self.height = self.y
-
     def copy(self):
         return self.__class__(self.x, self.y)
 
