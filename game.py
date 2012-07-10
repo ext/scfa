@@ -33,6 +33,13 @@ class Game(object):
     def quit(self, event=None):
         self._running = False
 
+    @event(pygame.KEYDOWN)
+    def on_keypress(self, event):
+        if event.key == 113 and event.mod & KMOD_CTRL: # ctrl+q
+            return self.quit()
+        if event.key == 27: # esc
+            return self.quit()
+
     def poll(self):
         global event_table
         for event in pygame.event.get():
