@@ -3,6 +3,13 @@ import os, sys
 from vector import Vector2i
 from pygame.locals import *
 
+event_table = {}
+def event(type):
+    def wrapper(func):
+        event_table[type] = func
+        return func
+    return wrapper
+
 class Game(object):
     def __init__(self):
         self._running = False
@@ -18,8 +25,17 @@ class Game(object):
     def running(self):
         return self._running
 
-    def quit(self):
+    @event(pygame.QUIT)
+    def quit(self, event=None):
         self._running = False
+
+    def poll(self):
+        global event_table
+        for event in pygame.event.get():
+            func = event_table.get(event.type, None)
+            if func is None:
+                continue
+            func(self, event)
 
     def update(self):
         pass
@@ -30,6 +46,7 @@ class Game(object):
     def run(self):
         self._running = True
         while self.running():
+            self.poll()
             self.update()
             self.render()
 
