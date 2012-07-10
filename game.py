@@ -2,6 +2,8 @@ import pygame
 import os, sys
 from vector import Vector2i
 from pygame.locals import *
+from OpenGL.GL import *
+from OpenGL.GLU import *
 
 event_table = {}
 def event(type):
@@ -22,6 +24,8 @@ class Game(object):
         pygame.display.set_mode(size.xy, flags)
         pygame.display.set_caption('nox II gamedev entry')
 
+        glClearColor(1,0,1,1)
+
     def running(self):
         return self._running
 
@@ -41,6 +45,8 @@ class Game(object):
         pass
 
     def render(self):
+        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+
         pygame.display.flip()
 
     def run(self):
