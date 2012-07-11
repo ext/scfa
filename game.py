@@ -6,6 +6,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 
 from vbo import VBO
+from fbo import FBO
 from vector import Vector2i
 
 event_table = {}
@@ -27,8 +28,7 @@ class Game(object):
         pygame.display.set_mode(size.xy, flags)
         pygame.display.set_caption('nox II gamedev entry')
 
-        glClearColor(1,0,1,1)
-
+        glEnable(GL_TEXTURE_2D)
         glEnableClientState(GL_VERTEX_ARRAY)
 
         # temp
@@ -40,6 +40,8 @@ class Game(object):
                 ], np.float32)
         i = np.array([0,1,2,3], np.uint32)
         self.test = VBO(GL_QUADS, v, i)
+
+        self.fbo = FBO(Vector2i(100,100))
 
     def running(self):
         return self._running
@@ -67,9 +69,14 @@ class Game(object):
         pass
 
     def render(self):
+        glClearColor(1,0,1,1)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
-        glColor4f(1,1,0,1)
+        with self.fbo as frame:
+            frame.clear(0,1,1,1)
+
+        glColor4f(1,1,1,1)
+        self.fbo.bind_texture()
         self.test.draw()
 
         pygame.display.flip()
