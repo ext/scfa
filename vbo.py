@@ -34,7 +34,7 @@ class VBO(object):
         #glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (const GLvoid*) (2*sizeof(glm::vec3)+sizeof(glm::vec2)))
         #glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (const GLvoid*) (3*sizeof(glm::vec3)+sizeof(glm::vec2)))
 
-        glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, None)
+        glDrawElements(self.what, 4, GL_UNSIGNED_INT, None)
 
         glBindBufferARB(GL_ARRAY_BUFFER, 0)
         glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, 0)
