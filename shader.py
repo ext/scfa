@@ -1,6 +1,7 @@
 import re
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from OpenGL.GL.ARB.uniform_buffer_object import *
 from os.path import exists, join
 import numpy as np
 
@@ -48,7 +49,36 @@ def preprocess(source, parent_id):
         else:
             yield line
 
+class UniformBlock(object):
+    counter = 0
+
+    def __init__(self, name, size, usage=GL_DYNAMIC_DRAW):
+        self.id = glGenBuffers(1)
+        self.name = name
+        self.size = size
+        self.usage = usage
+        self.binding = UniformBlock.counter
+        UniformBlock.counter += 1
+
+        with self:
+            glBufferData(GL_UNIFORM_BUFFER, self.size, None, usage)
+            glBindBufferRange(GL_UNIFORM_BUFFER, self.binding, self.id, 0, self.size)
+
+    def __enter__(self):
+        glBindBuffer(GL_UNIFORM_BUFFER, self.id)
+
+    def __exit__(self, type, value, traceback):
+        glBindBuffer(GL_UNIFORM_BUFFER, self.id)
+
+    def upload(self, *args):
+        with self:
+            for offset, size, value in args:
+                glBufferSubData(GL_UNIFORM_BUFFER, offset, size, value);
+
 class Shader(object):
+    uproj = None
+    umodel = None
+
     def __init__(self, name):
         self.initialize()
 
@@ -62,6 +92,13 @@ class Shader(object):
         self.m = glGetUniformLocation(self.sp, 'm')
         self.p = glGetUniformLocation(self.sp, 'p')
         self.pv = glGetUniformLocation(self.sp, 'pv')
+
+        for k,v in Shader.__dict__.iteritems():
+            if v.__class__.__name__ != 'UniformBlock': continue
+
+            id = glGetUniformBlockIndex(self.sp, v.name)
+            if id != -1:
+                glUniformBlockBinding(self.sp, id, v.binding)
 
         self.unbind()
 
@@ -114,8 +151,34 @@ class Shader(object):
 
     @staticmethod
     def initialize():
+        if Shader.uproj is not None: return
+
+        Shader.uproj = UniformBlock('projectionViewMatrices', 4*16*3)
+        Shader.umodel = UniformBlock('modelMatrices', 4*16*1)
+
         for i in range(1):
             glEnableVertexAttribArray(i)
+
+    #@staticmethod
+    def upload_projection_view(self, proj, view):
+        pv = np.matrix(view) * np.matrix(proj)
+        #print
+        #print 'proj', proj
+        #print 'view', view
+        #print 'pv', pv
+
+        glUniformMatrix4fv(self.pv, 1, False, pv)
+        #s = 4*16
+        #Shader.uproj.upload(
+        #    (0*s, s, pv),
+        #    (1*s, s, proj),
+        #    (2*s, s, view))
+
+    #@staticmethod
+    def upload_model(self, mat):
+        #s = 4*16
+        #Shader.uproj.upload((0*s, s, mat))
+        glUniformMatrix4fv(self.pv, 1, False, mat)
 
 class Matrix:
     @staticmethod

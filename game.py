@@ -37,12 +37,6 @@ class Game(object):
         self.view = Matrix.lookat(1,3,5, 0,0,0, 0,1,0)
         self.model = Matrix.identity()
 
-        glMatrixMode(GL_PROJECTION)
-        glLoadMatrixf(self.projection)
-
-        glMatrixMode(GL_MODELVIEW)
-        glLoadMatrixf(self.view)
-
         # temp
         v = np.array([
                 0,0,0,
@@ -86,6 +80,7 @@ class Game(object):
         glClearColor(1,0,1,1)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
+
         with self.fbo as frame:
             frame.clear(0,1,1,1)
 
@@ -93,6 +88,7 @@ class Game(object):
         self.fbo.bind_texture()
         self.shader.bind()
         self.shader.upload_projection_view(self.projection, self.view)
+        self.shader.upload_model(self.model)
         self.test.draw()
         Shader.unbind()
 
