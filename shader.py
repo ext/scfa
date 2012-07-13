@@ -145,29 +145,11 @@ class Shader(object):
     def unbind():
         glUseProgram(0)
 
-    def upload_projection_view(self, proj, view):
-        pv = np.matrix(view) * np.matrix(proj)
-        glUniformMatrix4fv(self.pv, 1, False, pv)
-
-    @staticmethod
-    def initialize():
-        if Shader.uproj is not None: return
-
-        Shader.uproj = UniformBlock('projectionViewMatrices', 4*16*3)
-        Shader.umodel = UniformBlock('modelMatrices', 4*16*1)
-
-        for i in range(1):
-            glEnableVertexAttribArray(i)
-
     #@staticmethod
     def upload_projection_view(self, proj, view):
         pv = np.matrix(view) * np.matrix(proj)
-        #print
-        #print 'proj', proj
-        #print 'view', view
-        #print 'pv', pv
-
         glUniformMatrix4fv(self.pv, 1, False, pv)
+
         #s = 4*16
         #Shader.uproj.upload(
         #    (0*s, s, pv),
@@ -178,7 +160,17 @@ class Shader(object):
     def upload_model(self, mat):
         #s = 4*16
         #Shader.uproj.upload((0*s, s, mat))
-        glUniformMatrix4fv(self.pv, 1, False, mat)
+        glUniformMatrix4fv(self.m, 1, False, mat)
+
+    @staticmethod
+    def initialize():
+        if Shader.uproj is not None: return
+
+        Shader.uproj = UniformBlock('projectionViewMatrices', 4*16*3)
+        Shader.umodel = UniformBlock('modelMatrices', 4*16*1)
+
+        for i in range(1):
+            glEnableVertexAttribArray(i)
 
 class Matrix:
     @staticmethod
