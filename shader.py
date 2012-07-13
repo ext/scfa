@@ -2,6 +2,7 @@ import re
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from os.path import exists, join
+import numpy as np
 
 file_counter = 1
 file_lut = {}
@@ -107,8 +108,9 @@ class Shader(object):
     def unbind():
         glUseProgram(0)
 
-    def upload(self, p):
-        glUniformMatrix4fv(self.p, 1, False, p)
+    def upload(self, proj, view):
+        pv = np.matrix(view) * np.matrix(proj)
+        glUniformMatrix4fv(self.pv, 1, False, pv)
 
     @staticmethod
     def initialize():

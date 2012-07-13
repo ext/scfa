@@ -8,10 +8,10 @@ in vec4 in_pos;
 
 //out vec2 uv;
 
-uniform mat4 p;
+uniform mat4 pv;
 
 void main(){
-     gl_Position = p * gl_ModelViewMatrix * in_pos;
+     gl_Position = pv * in_pos;
 //	uv = in_uv;
 //	vec4 w_pos = modelMatrix * in_pos;
 //	gl_Position = projectionViewMatrix *  w_pos;
