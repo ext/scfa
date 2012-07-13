@@ -10,6 +10,6 @@ uniform mat4 pv;
 //out vec2 uv;
 
 void main(){
-	vec4 w_pos = /*modelMatrix * */in_pos;
+	vec4 w_pos = m * in_pos;
 	gl_Position = pv *  w_pos;
 }
