@@ -162,6 +162,7 @@ class Shader(object):
     def upload_player(player):
         Shader.uplayer.upload((0,   4*2, np.array(player.pos.xy, np.float32)))
         Shader.uplayer.upload((4*2, 4*1, np.array(pygame.time.get_ticks() / 1000.0, np.float32)))
+        Shader.uplayer.upload((4*3, 4*1, np.array(player.hp_ratio, np.float32)))
 
     @staticmethod
     def initialize():
@@ -169,7 +170,7 @@ class Shader(object):
 
         Shader.uproj = UniformBlock('projectionViewMatrices', 4*16*3)
         Shader.umodel = UniformBlock('modelMatrices', 4*16*1)
-        Shader.uplayer = UniformBlock('player', 4*3)
+        Shader.uplayer = UniformBlock('player', 4*4)
 
         for i in range(2):
             glEnableVertexAttribArray(i)

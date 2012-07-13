@@ -18,6 +18,7 @@ class Player(object):
         self.texture = Image('texture/player.png', filter=GL_NEAREST)
         self.in_air = False
         self.jumping = 0
+        self.hp_ratio = 0.8
 
         v = np.array([
                 0,1,0, 0,1,
