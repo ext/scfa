@@ -89,10 +89,6 @@ class Shader(object):
 
         self.bind()
 
-        self.m = glGetUniformLocation(self.sp, 'm')
-        self.p = glGetUniformLocation(self.sp, 'p')
-        self.pv = glGetUniformLocation(self.sp, 'pv')
-
         for k,v in Shader.__dict__.iteritems():
             if v.__class__.__name__ != 'UniformBlock': continue
 
@@ -148,19 +144,17 @@ class Shader(object):
     #@staticmethod
     def upload_projection_view(self, proj, view):
         pv = np.matrix(view) * np.matrix(proj)
-        glUniformMatrix4fv(self.pv, 1, False, pv)
 
-        #s = 4*16
-        #Shader.uproj.upload(
-        #    (0*s, s, pv),
-        #    (1*s, s, proj),
-        #    (2*s, s, view))
+        s = 4*16
+        Shader.uproj.upload(
+            (0*s, s, pv),
+            (1*s, s, proj),
+            (2*s, s, view))
 
     #@staticmethod
     def upload_model(self, mat):
-        #s = 4*16
-        #Shader.uproj.upload((0*s, s, mat))
-        glUniformMatrix4fv(self.m, 1, False, mat)
+        s = 4*16
+        Shader.umodel.upload((0*s, s, mat))
 
     @staticmethod
     def initialize():
