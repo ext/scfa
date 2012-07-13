@@ -141,8 +141,8 @@ class Shader(object):
     def unbind():
         glUseProgram(0)
 
-    #@staticmethod
-    def upload_projection_view(self, proj, view):
+    @staticmethod
+    def upload_projection_view(proj, view):
         pv = np.matrix(view) * np.matrix(proj)
 
         s = 4*16
@@ -151,8 +151,8 @@ class Shader(object):
             (1*s, s, proj),
             (2*s, s, view))
 
-    #@staticmethod
-    def upload_model(self, mat):
+    @staticmethod
+    def upload_model(mat):
         s = 4*16
         Shader.umodel.upload((0*s, s, mat))
 

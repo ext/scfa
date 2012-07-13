@@ -36,10 +36,10 @@ class Map(object):
             tx = tile % tile_div
             ty = tile / tile_div
 
-            ver[i*4+0] = (x  , y  , 0, tx*dx,    ty*dy)
-            ver[i*4+1] = (x+1, y  , 0, tx*dx+dx, ty*dy)
-            ver[i*4+2] = (x+1, y+1, 0, tx*dx+dx, ty*dy+dy)
-            ver[i*4+3] = (x  , y+1, 0, tx*dx,    ty*dy+dy)
+            ver[i*4+0] = (x  , y  , 0, tx*dx,    ty*dy+dy)
+            ver[i*4+1] = (x+1, y  , 0, tx*dx+dx, ty*dy+dy)
+            ver[i*4+2] = (x+1, y+1, 0, tx*dx+dx, ty*dy)
+            ver[i*4+3] = (x  , y+1, 0, tx*dx,    ty*dy)
 
         ver = ver.flatten()
         ind = np.array(range(n*4), np.uint32)

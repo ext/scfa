@@ -8,8 +8,9 @@ from OpenGL.GLU import *
 from vbo import VBO
 from fbo import FBO
 from shader import Shader, Matrix
-from vector import Vector2i
+from vector import Vector2i, Vector2f
 from map import Map
+from player import Player
 
 event_table = {}
 def event(type):
@@ -21,6 +22,7 @@ def event(type):
 class Game(object):
     def __init__(self):
         self._running = False
+        self.camera = Vector2f(0,5)
 
     def init(self, size, fullscreen=False):
         flags = OPENGL|DOUBLEBUF
@@ -33,10 +35,10 @@ class Game(object):
         glMatrixMode(GL_MODELVIEW)
         glEnable(GL_TEXTURE_2D)
         glDisable(GL_CULL_FACE)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA)
 
         self.projection = Matrix.perspective(75, size, 0.1, 100)
-        self.view = Matrix.lookat(0,5,15, 0,5,0, 0,1,0)
-        self.model = Matrix.identity()
 
         # temp
         v = np.array([
@@ -52,6 +54,7 @@ class Game(object):
 
         self.shader = Shader('derp')
         self.map = Map('map.json')
+        self.player = Player(Vector2f(0,0))
 
     def running(self):
         return self._running
@@ -66,6 +69,7 @@ class Game(object):
             return self.quit()
         if event.key == 27: # esc
             return self.quit()
+        print event.key
 
     def poll(self):
         global event_table
@@ -76,12 +80,22 @@ class Game(object):
             func(self, event)
 
     def update(self):
-        pass
+        key = pygame.key.get_pressed()
+
+        if key[97]: self.camera.x -= 0.01
+        if key[100]: self.camera.x += 0.01
+        if key[115]: self.camera.y -= 0.01
+        if key[119]: self.camera.y += 0.01
 
     def render(self):
         glClearColor(1,0,1,1)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
+        view = Matrix.lookat(self.camera.x, self.camera.y, 15, self.camera.x, self.camera.y, 0, 0,1,0)
+        model = Matrix.identity()
+
+        Shader.upload_projection_view(self.projection, view)
+        Shader.upload_model(model)
 
         with self.fbo as frame:
             frame.clear(0,1,1,1)
@@ -89,9 +103,8 @@ class Game(object):
         glColor4f(1,1,1,1)
         self.fbo.bind_texture()
         self.shader.bind()
-        self.shader.upload_projection_view(self.projection, self.view)
-        self.shader.upload_model(self.model)
         self.map.draw()
+        self.player.draw()
         Shader.unbind()
 
         pygame.display.flip()
