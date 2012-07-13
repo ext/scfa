@@ -48,11 +48,11 @@ def preprocess(source, parent_id):
 
 class Shader(object):
     def __init__(self, name):
-        self.sp = glCreateProgram()
+        self.initialize()
 
+        self.sp = glCreateProgram()
         self.add_shader(name, '.vs', GL_VERTEX_SHADER)
         self.add_shader(name, '.fs', GL_FRAGMENT_SHADER)
-
         glLinkProgram(self.sp)
 
     def add_shader(self, filename, ext, type):
@@ -98,3 +98,7 @@ class Shader(object):
     def unbind():
         glUseProgram(0)
 
+
+    @staticmethod
+    def initialize():
+        glEnableVertexAttribArray(0)
