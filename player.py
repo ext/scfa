@@ -6,6 +6,9 @@ import numpy as np
 from OpenGL.GL import *
 import math
 
+def walkable(id):
+    return id <= 1 or id > 100
+
 class Player(object):
     weight = 70.0
 
@@ -39,7 +42,7 @@ class Player(object):
         self.in_air = True
         t1 = map.tile_at(self.pos + Vector2f(0, self.vel.y))
         t2 = map.tile_at(self.pos + Vector2f(0.999, self.vel.y))
-        if t1 <= 1 and t2 <= 1:
+        if walkable(t1) and walkable (t2):
             self.pos.y += self.vel.y
         else:
             self.in_air = False
@@ -49,7 +52,7 @@ class Player(object):
         # handle horizontal
         t1 = map.tile_at(self.pos + Vector2f(self.vel.x, 0.01))
         t2 = map.tile_at(self.pos + Vector2f(self.vel.x + 1.0, 0.01))
-        if t1 == 1 and t2 == 1:
+        if walkable(t1) and walkable(t2):
             self.pos.x += self.vel.x
         elif self.vel.x < 0:
             self.pos.x = math.floor(self.pos.x)
