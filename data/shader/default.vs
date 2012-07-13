@@ -7,7 +7,7 @@
 //out vec2 uv;
 
 void main(){
-     gl_Position = ftransform();
+     gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * gl_Vertex;
 //	uv = in_uv;
 //	vec4 w_pos = modelMatrix * in_pos;
 //	gl_Position = projectionViewMatrix *  w_pos;
