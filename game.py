@@ -53,15 +53,16 @@ class Game(object):
         self.quad = VBO(GL_QUADS, v, i)
 
         # parallax
+        self.parallax_rep = 5
         v = np.array([
-                0,0,0, 0,0,
-                1,0,0, 5,0,
-                1,1,0, 5,5,
-                0,1,0, 0,5,
+                0,0,0, 0,1,
+                1,0,0, self.parallax_rep, 1,
+                1,1,0, self.parallax_rep,0,
+                0,1,0, 0,0,
                 ], np.float32)
         i = np.array([0,1,2,3], np.uint32)
         self.repquad = VBO(GL_QUADS, v, i)
-        self.parallax = Image('texture/bg1.png', wrap=GL_REPEAT)
+        self.parallax = Image('texture/sky.png', wrap=GL_REPEAT)
 
         self.fbo = FBO(self.size, format=GL_RGB8, depth=True)
 
@@ -122,8 +123,8 @@ class Game(object):
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
         view = Matrix.lookat(
-            self.player.pos.x, self.player.pos.y, 15,
-            self.player.pos.x, self.player.pos.y, 0,
+            self.player.pos.x, self.player.pos.y+7, 15,
+            self.player.pos.x, self.player.pos.y+7, 0,
             0,1,0)
 
         with self.fbo as frame:
@@ -135,10 +136,10 @@ class Game(object):
 
             # parallax background
             pm1 = Matrix.identity()
-            pm1[3,0] = self.player.pos.x * 0.5 - 25
-            pm1[3,1] = self.player.pos.y * 0.5 - 225
-            pm1[0,0] = 250.0
-            pm1[1,1] = 250.0
+            pm1[3,0] = self.player.pos.x * 0.5 - 20
+            pm1[3,1] = self.player.pos.y * 0.5 - 20
+            pm1[0,0] = 42.0 * self.parallax_rep
+            pm1[1,1] = 42.0
             self.parallax.texture_bind()
             Shader.upload_model(pm1)
             self.repquad.draw()
