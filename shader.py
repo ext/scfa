@@ -1,5 +1,6 @@
 import re
 from OpenGL.GL import *
+from OpenGL.GLU import *
 from os.path import exists, join
 
 file_counter = 1
@@ -106,7 +107,7 @@ class Shader(object):
 
 class Matrix:
     @staticmethod
-    def projection(fov, size, near, far):
+    def perspective(fov, size, near, far):
         glLoadIdentity()
         gluPerspective(fov, size.ratio(), near, far)
         return glGetFloatv(GL_MODELVIEW_MATRIX)

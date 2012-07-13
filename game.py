@@ -7,7 +7,7 @@ from OpenGL.GLU import *
 
 from vbo import VBO
 from fbo import FBO
-from shader import Shader
+from shader import Shader, Matrix
 from vector import Vector2i
 
 event_table = {}
