@@ -101,4 +101,5 @@ class Shader(object):
 
     @staticmethod
     def initialize():
-        glEnableVertexAttribArray(0)
+        for i in range(1):
+            glEnableVertexAttribArray(i)
