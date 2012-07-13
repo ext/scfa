@@ -40,7 +40,7 @@ class Game(object):
         gluLookAt(1,3,5, 0,0,0, 0,1,0)
 
         glEnable(GL_TEXTURE_2D)
-        #glEnableClientState(GL_VERTEX_ARRAY)
+        glDisable(GL_CULL_FACE)
 
         # temp
         v = np.array([
