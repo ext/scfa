@@ -35,6 +35,7 @@ class Game(object):
 
         self.projection = Matrix.perspective(75, size, 0.1, 100)
         self.view = Matrix.lookat(1,3,5, 0,0,0, 0,1,0)
+        self.model = Matrix.identity()
 
         glMatrixMode(GL_PROJECTION)
         glLoadMatrixf(self.projection)
