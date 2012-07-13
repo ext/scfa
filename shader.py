@@ -108,7 +108,7 @@ class Shader(object):
     def unbind():
         glUseProgram(0)
 
-    def upload(self, proj, view):
+    def upload_projection_view(self, proj, view):
         pv = np.matrix(view) * np.matrix(proj)
         glUniformMatrix4fv(self.pv, 1, False, pv)
 
