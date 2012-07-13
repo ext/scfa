@@ -26,8 +26,10 @@ class VBO(object):
         glBindBuffer(GL_ARRAY_BUFFER, self.buffer[0])
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffer[1])
 
-        glVertexPointer(3, GL_FLOAT, self.stride, None)
-        #glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertex.itemsize, 0)
+        glEnableVertexAttribArray(0)
+
+        #glVertexPointer(3, GL_FLOAT, self.stride, None)
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, self.stride, None)
         #glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (const GLvoid*) (sizeof(glm::vec3)))
         #glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (const GLvoid*) (sizeof(glm::vec3)+sizeof(glm::vec2)))
         #glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (const GLvoid*) (2*sizeof(glm::vec3)+sizeof(glm::vec2)))
