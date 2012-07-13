@@ -28,5 +28,4 @@ layout(std140) uniform projectionViewMatrices {
 
 layout(std140) uniform modelMatrices {
    mat4 modelMatrix;
-   mat4 normalMatrix;
 };
