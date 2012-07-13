@@ -103,3 +103,21 @@ class Shader(object):
     def initialize():
         for i in range(1):
             glEnableVertexAttribArray(i)
+
+class Matrix:
+    @staticmethod
+    def projection(fov, size, near, far):
+        glLoadIdentity()
+        gluPerspective(fov, size.ratio(), near, far)
+        return glGetFloatv(GL_MODELVIEW_MATRIX)
+
+    @staticmethod
+    def lookat(ex, ey, ez, cx, cy, cz, ux, uy, uz):
+        glLoadIdentity()
+        gluLookAt(ex, ey, ez, cx, cy, cz, ux, uy, uz)
+        return glGetFloatv(GL_MODELVIEW_MATRIX)
+
+    @staticmethod
+    def identity():
+        glLoadIdentity()
+        return glGetFloatv(GL_MODELVIEW_MATRIX)
