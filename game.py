@@ -28,19 +28,19 @@ class Game(object):
 
         pygame.display.set_mode(size.xy, flags)
         pygame.display.set_caption('nox II gamedev entry')
-        #glMatrixMode(GL_MODELVIEW)
+
+        glMatrixMode(GL_MODELVIEW)
+        glEnable(GL_TEXTURE_2D)
+        glDisable(GL_CULL_FACE)
 
         self.projection = Matrix.perspective(75, size, 0.1, 100)
+        self.view = Matrix.lookat(1,3,5, 0,0,0, 0,1,0)
 
         glMatrixMode(GL_PROJECTION)
         glLoadMatrixf(self.projection)
 
         glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
-        gluLookAt(1,3,5, 0,0,0, 0,1,0)
-
-        glEnable(GL_TEXTURE_2D)
-        glDisable(GL_CULL_FACE)
+        glLoadMatrixf(self.view)
 
         # temp
         v = np.array([
