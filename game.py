@@ -29,6 +29,13 @@ class Game(object):
         pygame.display.set_mode(size.xy, flags)
         pygame.display.set_caption('nox II gamedev entry')
 
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        gluPerspective(75, size.ratio(), 0.1, 100)
+
+        glMatrixMode(GL_MODELVIEW)
+        gluLookAt(1,3,5, 0,0,0, 0,1,0)
+
         glEnable(GL_TEXTURE_2D)
         glEnableClientState(GL_VERTEX_ARRAY)
 
@@ -80,9 +87,9 @@ class Game(object):
 
         glColor4f(1,1,1,1)
         self.fbo.bind_texture()
-        self.shader.bind()
+        #self.shader.bind()
         self.test.draw()
-        Shader.unbind()
+        #Shader.unbind()
 
         pygame.display.flip()
 
