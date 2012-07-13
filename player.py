@@ -11,6 +11,7 @@ def walkable(id):
 
 class Player(object):
     weight = 70.0
+    max_hp = 100
 
     def __init__(self, pos):
         self.pos = pos
@@ -18,6 +19,7 @@ class Player(object):
         self.texture = Image('texture/player.png', filter=GL_NEAREST)
         self.in_air = False
         self.jumping = 0
+        self.hp = Player.max_hp
         self.hp_ratio = 0.8
 
         v = np.array([
@@ -59,6 +61,10 @@ class Player(object):
             self.pos.x = math.floor(self.pos.x)
         elif self.vel.x > 0:
             self.pos.x = math.ceil(self.pos.x)
+
+        self.hp -= 1 * dt
+        self.hp_ratio = max(float(self.hp) / Player.max_hp, 0.0)
+        print self.hp_ratio
 
     def draw(self):
         model = Matrix.identity()

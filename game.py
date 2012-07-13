@@ -70,7 +70,7 @@ class Game(object):
         self.passthru = Shader('passtru')
 
         self.map = Map('map.json')
-        self.player = Player(Vector2f(0,0))
+        self.player = Player(Vector2f(55,-9))
         self.clock = pygame.time.Clock()
 
     def running(self):
