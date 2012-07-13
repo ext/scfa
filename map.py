@@ -56,4 +56,7 @@ class Map(object):
         y = -int(pos.y)
         if x < 0 or y < 0: return -1
         i = y * self.width + x
-        return self.grid[i]
+        try:
+            return self.grid[i]
+        except IndexError:
+            return -1

@@ -70,7 +70,14 @@ class Game(object):
             return self.quit()
         if event.key == 27: # esc
             return self.quit()
-        #print event.key
+
+        if event.key == 119:
+            self.player.jump()
+
+    @event(pygame.KEYUP)
+    def on_keyrelease(self, event):
+        if event.key == 119:
+            self.player.unjump()
 
     def poll(self):
         global event_table
@@ -83,10 +90,8 @@ class Game(object):
     def update(self):
         key = pygame.key.get_pressed()
 
-        if key[97 ]: self.player.pos.x -= 0.1
-        if key[100]: self.player.pos.x += 0.1
-        if key[115]: self.player.pos.y -= 0.1
-        if key[119]: self.player.pos.y += 0.1
+        if key[97 ]: self.player.pos.x -= 0.15
+        if key[100]: self.player.pos.x += 0.15
 
         if key[260]: self.camera.x -= 0.1
         if key[262]: self.camera.x += 0.1
