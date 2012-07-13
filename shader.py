@@ -56,6 +56,14 @@ class Shader(object):
         self.add_shader(name, '.fs', GL_FRAGMENT_SHADER)
         glLinkProgram(self.sp)
 
+        self.bind()
+
+        self.m = glGetUniformLocation(self.sp, 'm')
+        self.p = glGetUniformLocation(self.sp, 'p')
+        self.pv = glGetUniformLocation(self.sp, 'pv')
+
+        self.unbind()
+
     def add_shader(self, filename, ext, type):
         shader = glCreateShader(type)
 
@@ -99,6 +107,8 @@ class Shader(object):
     def unbind():
         glUseProgram(0)
 
+    def upload(self, p):
+        glUniformMatrix4fv(self.p, 1, False, p)
 
     @staticmethod
     def initialize():

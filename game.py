@@ -92,6 +92,7 @@ class Game(object):
         glColor4f(1,1,1,1)
         self.fbo.bind_texture()
         self.shader.bind()
+        self.shader.upload(self.projection)
         self.test.draw()
         Shader.unbind()
 
