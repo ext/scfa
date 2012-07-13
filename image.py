@@ -16,7 +16,7 @@ class Image(object):
                 surface = pygame.image.load(fp).convert_alpha()
         except:
             traceback.print_exc()
-            with open('data/texture/default.png', 'rb') as fp:
+            with open('data/texture/default.jpg', 'rb') as fp:
                 surface = pygame.image.load(fp).convert_alpha()
 
         try:
