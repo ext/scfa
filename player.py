@@ -65,6 +65,8 @@ class Player(object):
         self.hp -= 1 * dt
         self.hp_ratio = max(float(self.hp) / Player.max_hp, 0.0)
 
+        print self.hp_ratio
+
     def draw(self):
         model = Matrix.identity()
 
@@ -84,4 +86,15 @@ class Player(object):
     def unjump(self):
         self.jumping = 0
 
+    def frobnicate(self, stuff):
+        min2 = self.pos
+        max = self.pos + Vector2f(1,2)
+        for obj in stuff:
+            omin = obj.pos
+            omax = obj.pos + Vector2f(1,1)
 
+            if max.x < omin.x or min2.x > omax.x: continue
+            if max.y < omin.y or min2.y > omax.y: continue
+
+            obj.killed = True
+            self.hp = min(self.hp + 35, Player.max_hp)

@@ -117,6 +117,8 @@ class Game(object):
 
         dt = 1.0 / self.clock.tick(60)
         self.player.update(dt, self.map)
+        self.player.frobnicate(self.map.pickups)
+        self.map.update()
 
     def render(self):
         glClearColor(1,0,1,1)

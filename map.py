@@ -69,3 +69,6 @@ class Map(object):
             return self.grid[i]
         except IndexError:
             return -1
+
+    def update(self):
+        self.pickups = [x for x in self.pickups if not x.killed]
