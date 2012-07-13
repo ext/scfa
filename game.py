@@ -87,9 +87,9 @@ class Game(object):
 
         glColor4f(1,1,1,1)
         self.fbo.bind_texture()
-        #self.shader.bind()
+        self.shader.bind()
         self.test.draw()
-        #Shader.unbind()
+        Shader.unbind()
 
         pygame.display.flip()
 
