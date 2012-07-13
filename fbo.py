@@ -28,6 +28,11 @@ class FBO(object):
             if status != GL_FRAMEBUFFER_COMPLETE:
                 raise RuntimeError, 'Framebuffer not complete, status: %d' % status
 
+            glEnable(GL_TEXTURE_2D)
+            glDisable(GL_CULL_FACE)
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA)
+
             self.clear(0,0,0,1)
 
     def bind_texture(self):

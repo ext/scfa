@@ -11,5 +11,4 @@ void main(){
 		clamp(((sin(time*2.5f + time*6.5f) + 1.0) * 0.5), 0.7, 1.0);
 	vec4 texel = texture2D(texture0, uv);
 	ocolor =  vec4(texel.rgb * light, texel.a);
-	
 }

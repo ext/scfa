@@ -11,6 +11,7 @@ from shader import Shader, Matrix
 from vector import Vector2i, Vector2f
 from map import Map
 from player import Player
+from image import Image
 
 event_table = {}
 def event(type):
@@ -29,6 +30,7 @@ class Game(object):
         if fullscreen:
             flags |= FULLSCREEN
 
+        self.size = size
         pygame.display.set_mode(size.xy, flags)
         pygame.display.set_caption('nox II gamedev entry')
 
@@ -39,8 +41,9 @@ class Game(object):
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA)
 
         self.projection = Matrix.perspective(75, size, 0.1, 100)
+        self.ortho = Matrix.ortho(size)
 
-        # temp
+        # parallax
         v = np.array([
                 0,0,0, 0,0,
                 1,0,0, 1,0,
@@ -48,11 +51,14 @@ class Game(object):
                 0,1,0, 0,1,
                 ], np.float32)
         i = np.array([0,1,2,3], np.uint32)
-        self.test = VBO(GL_QUADS, v, i)
+        self.quad = VBO(GL_QUADS, v, i)
+        self.parallax = Image('texture/bg1.png')
 
-        self.fbo = FBO(Vector2i(100,100))
+        self.fbo = FBO(self.size, format=GL_RGB8, depth=True)
 
         self.shader = Shader('derp')
+        self.passthru = Shader('passtru')
+
         self.map = Map('map.json')
         self.player = Player(Vector2f(0,0))
         self.clock = pygame.time.Clock()
@@ -110,20 +116,28 @@ class Game(object):
             self.player.pos.x, self.player.pos.y, 15,
             self.player.pos.x, self.player.pos.y, 0,
             0,1,0)
-        model = Matrix.identity()
-
-        Shader.upload_projection_view(self.projection, view)
-        Shader.upload_model(model)
-        Shader.upload_player(self.player)
+        ident = Matrix.identity()
 
         with self.fbo as frame:
-            frame.clear(0,1,1,1)
+            Shader.upload_projection_view(self.projection, view)
+            Shader.upload_model(ident)
+            Shader.upload_player(self.player)
 
-        glColor4f(1,1,1,1)
+            frame.clear(0,0,1,1)
+            self.shader.bind()
+            self.map.draw()
+            self.player.draw()
+
+        mat = Matrix.identity()
+        mat[0,0] = self.size.x
+        mat[1,1] = self.size.y
+        Shader.upload_projection_view(self.ortho, ident)
+        Shader.upload_model(mat)
+
         self.fbo.bind_texture()
-        self.shader.bind()
-        self.map.draw()
-        self.player.draw()
+        self.passthru.bind()
+        self.quad.draw()
+
         Shader.unbind()
 
         pygame.display.flip()
