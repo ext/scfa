@@ -50,3 +50,10 @@ class Map(object):
     def draw(self, *args, **kwargs):
         self.texture.texture_bind()
         self.vbo.draw(*args, **kwargs)
+
+    def tile_at(self, pos):
+        x = int(pos.x)
+        y = -int(pos.y)
+        if x < 0 or y < 0: return -1
+        i = y * self.width + x
+        return self.grid[i]

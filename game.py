@@ -54,7 +54,8 @@ class Game(object):
 
         self.shader = Shader('derp')
         self.map = Map('map.json')
-        self.player = Player(Vector2f(0,10))
+        self.player = Player(Vector2f(0,0))
+        self.clock = pygame.time.Clock()
 
     def running(self):
         return self._running
@@ -82,15 +83,18 @@ class Game(object):
     def update(self):
         key = pygame.key.get_pressed()
 
-        if key[97 ]: self.player.pos.x -= 0.01
-        if key[100]: self.player.pos.x += 0.01
-        if key[115]: self.player.pos.y -= 0.01
-        if key[119]: self.player.pos.y += 0.01
+        if key[97 ]: self.player.pos.x -= 0.1
+        if key[100]: self.player.pos.x += 0.1
+        if key[115]: self.player.pos.y -= 0.1
+        if key[119]: self.player.pos.y += 0.1
 
-        if key[260]: self.camera.x -= 0.01
-        if key[262]: self.camera.x += 0.01
-        if key[258]: self.camera.y -= 0.01
-        if key[264]: self.camera.y += 0.01
+        if key[260]: self.camera.x -= 0.1
+        if key[262]: self.camera.x += 0.1
+        if key[258]: self.camera.y -= 0.1
+        if key[264]: self.camera.y += 0.1
+
+        dt = 1.0 / self.clock.tick(60)
+        self.player.update(dt, self.map)
 
     def render(self):
         glClearColor(1,0,1,1)
