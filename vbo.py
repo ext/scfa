@@ -30,7 +30,7 @@ class VBO(object):
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, self.stride, c_void_p(0))
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, self.stride, c_void_p(4*3))
 
-        glDrawElements(self.what, 4, GL_UNSIGNED_INT, None)
+        glDrawElements(self.what, self.num_indices, GL_UNSIGNED_INT, None)
 
         glBindBuffer(GL_ARRAY_BUFFER, 0)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)

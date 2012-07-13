@@ -9,6 +9,7 @@ from vbo import VBO
 from fbo import FBO
 from shader import Shader, Matrix
 from vector import Vector2i
+from map import Map
 
 event_table = {}
 def event(type):
@@ -34,7 +35,7 @@ class Game(object):
         glDisable(GL_CULL_FACE)
 
         self.projection = Matrix.perspective(75, size, 0.1, 100)
-        self.view = Matrix.lookat(1,3,5, 0,0,0, 0,1,0)
+        self.view = Matrix.lookat(0,5,15, 0,5,0, 0,1,0)
         self.model = Matrix.identity()
 
         # temp
@@ -50,6 +51,7 @@ class Game(object):
         self.fbo = FBO(Vector2i(100,100))
 
         self.shader = Shader('derp')
+        self.map = Map('map.json')
 
     def running(self):
         return self._running
@@ -89,7 +91,7 @@ class Game(object):
         self.shader.bind()
         self.shader.upload_projection_view(self.projection, self.view)
         self.shader.upload_model(self.model)
-        self.test.draw()
+        self.map.draw()
         Shader.unbind()
 
         pygame.display.flip()
@@ -109,7 +111,7 @@ def run():
     # superglobals for quick access
     __builtins__['game'] = game
 
-    game.init(Vector2i(800,600))
+    game.init(Vector2i(1024,768))
     game.run()
 
     # force deallocation

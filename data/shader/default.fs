@@ -5,7 +5,6 @@ in vec2 uv;
 out vec4 ocolor;
 
 void main(){
-	//ocolor = texture2D(texture0, uv);
-  ocolor = vec4(uv,0,1);
+	ocolor = texture2D(texture0, uv);
 }
 

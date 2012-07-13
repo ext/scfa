@@ -8,25 +8,28 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 
 class Image(object):
-	def __init__(self, filename, filter=GL_LINEAR):
+    def __init__(self, filename, filter=GL_LINEAR):
         self.id = glGenTextures(1)
 
-		try:
-            with open(file, 'rb') as fp:
+        try:
+            with open(os.path.join('data', filename), 'rb') as fp:
                 surface = pygame.image.load(fp).convert_alpha()
-		except:
-			traceback.print_exc()
-			with open('data/texture/default.png', 'rb') as fp:
+        except:
+            traceback.print_exc()
+            with open('data/texture/default.png', 'rb') as fp:
                 surface = pygame.image.load(fp).convert_alpha()
 
-		try:
-			data = pygame.image.tostring(surface, "RGBA", 0)
+        try:
+            data = pygame.image.tostring(surface, "RGBA", 0)
 
-			glBindTexture(GL_TEXTURE_2D, texture)
-			glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, surface.get_width(), surface.get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter)
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter)
-		except Exception, e:
-			traceback.print_exc()
+            self.texture_bind()
+            glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, surface.get_width(), surface.get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter)
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter)
+        except Exception, e:
+            traceback.print_exc()
 
         self.size = surface.get_size()
+
+    def texture_bind(self):
+        glBindTexture(GL_TEXTURE_2D, self.id)
