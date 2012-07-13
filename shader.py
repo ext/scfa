@@ -163,7 +163,7 @@ class Shader(object):
         Shader.uproj = UniformBlock('projectionViewMatrices', 4*16*3)
         Shader.umodel = UniformBlock('modelMatrices', 4*16*1)
 
-        for i in range(1):
+        for i in range(2):
             glEnableVertexAttribArray(i)
 
 class Matrix:

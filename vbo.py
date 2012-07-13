@@ -4,7 +4,7 @@ from ctypes import c_void_p
 import numpy as np
 
 class VBO(object):
-    stride = 4*3
+    stride = 4*5
 
     def __init__(self, what, vertices, indices):
         self.buffer = glGenBuffers(2)
@@ -27,12 +27,8 @@ class VBO(object):
         glBindBuffer(GL_ARRAY_BUFFER, self.buffer[0])
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.buffer[1])
 
-        #glVertexPointer(3, GL_FLOAT, self.stride, None)
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, self.stride, c_void_p(0))
-        #glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (const GLvoid*) (sizeof(glm::vec3)))
-        #glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (const GLvoid*) (sizeof(glm::vec3)+sizeof(glm::vec2)))
-        #glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (const GLvoid*) (2*sizeof(glm::vec3)+sizeof(glm::vec2)))
-        #glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (const GLvoid*) (3*sizeof(glm::vec3)+sizeof(glm::vec2)))
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, self.stride, c_void_p(4*3))
 
         glDrawElements(self.what, 4, GL_UNSIGNED_INT, None)
 

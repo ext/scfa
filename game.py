@@ -39,10 +39,10 @@ class Game(object):
 
         # temp
         v = np.array([
-                0,0,0,
-                1,0,0,
-                1,1,0,
-                0,1,0,
+                0,0,0, 0,0,
+                1,0,0, 1,0,
+                1,1,0, 1,1,
+                0,1,0, 0,1,
                 ], np.float32)
         i = np.array([0,1,2,3], np.uint32)
         self.test = VBO(GL_QUADS, v, i)
