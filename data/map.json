@@ -10,6 +10,54 @@
          "width":550,
          "x":0,
          "y":0
+        }, 
+        {
+         "color":"#ffff00",
+         "height":36,
+         "name":"Object Layer 1",
+         "objects":[
+                {
+                 "height":8,
+                 "name":"asdf",
+                 "properties":
+                    {
+
+                    },
+                 "type":"food",
+                 "width":8,
+                 "x":488,
+                 "y":48
+                }, 
+                {
+                 "height":8,
+                 "name":"asdf",
+                 "properties":
+                    {
+
+                    },
+                 "type":"food",
+                 "width":8,
+                 "x":496,
+                 "y":56
+                }, 
+                {
+                 "height":8,
+                 "name":"asdf",
+                 "properties":
+                    {
+
+                    },
+                 "type":"food",
+                 "width":8,
+                 "x":504,
+                 "y":64
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":550,
+         "x":0,
+         "y":0
         }],
  "orientation":"orthogonal",
  "properties":

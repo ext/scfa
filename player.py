@@ -64,7 +64,6 @@ class Player(object):
 
         self.hp -= 1 * dt
         self.hp_ratio = max(float(self.hp) / Player.max_hp, 0.0)
-        print self.hp_ratio
 
     def draw(self):
         model = Matrix.identity()

@@ -7,6 +7,13 @@ import os
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
+lut = {}
+def load(filename, *args, **kwargs):
+    global lut
+    if filename not in lut:
+        lut[filename] = Image(filename, *args, **kwargs)
+    return lut[filename]
+
 class Image(object):
     def __init__(self, filename, filter=GL_LINEAR, wrap=GL_CLAMP_TO_EDGE):
         self.id = glGenTextures(1)

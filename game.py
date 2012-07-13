@@ -147,6 +147,10 @@ class Game(object):
             Shader.upload_projection_view(self.projection, view)
 
             self.map.draw()
+
+            # entities
+            for obj in self.map.pickups:
+                obj.draw(self.quad)
             self.player.draw()
 
         mat = Matrix.identity()

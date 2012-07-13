@@ -4,6 +4,7 @@ from OpenGL.GL import *
 from vbo import VBO
 from image import Image
 from shader import Shader, Matrix
+from food import Food
 import numpy as np
 
 class Map(object):
@@ -47,6 +48,12 @@ class Map(object):
         self.vbo = VBO(GL_QUADS, ver, ind)
 
         self.grid = np.array(data['layers'][0]['data'], np.uint32)
+
+        # load objects
+        self.pickups = []
+        for obj in data['layers'][1]['objects']:
+            if obj['type'] == 'food':
+                self.pickups.append(Food(**obj))
 
     def draw(self, *args, **kwargs):
         Shader.upload_model(Matrix.identity())
