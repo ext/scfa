@@ -29,3 +29,8 @@ layout(std140) uniform projectionViewMatrices {
 layout(std140) uniform modelMatrices {
    mat4 modelMatrix;
 };
+
+layout(std140) uniform player {
+	vec2 player_pos;
+	float time;
+};

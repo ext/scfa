@@ -4,6 +4,7 @@ from OpenGL.GLU import *
 from OpenGL.GL.ARB.uniform_buffer_object import *
 from os.path import exists, join
 import numpy as np
+import pygame
 
 file_counter = 1
 file_lut = {}
@@ -78,6 +79,7 @@ class UniformBlock(object):
 class Shader(object):
     uproj = None
     umodel = None
+    uplayer = None
 
     def __init__(self, name):
         self.initialize()
@@ -157,11 +159,17 @@ class Shader(object):
         Shader.umodel.upload((0*s, s, mat))
 
     @staticmethod
+    def upload_player(player):
+        Shader.uplayer.upload((0,   4*2, np.array(player.pos.xy, np.float32)))
+        Shader.uplayer.upload((4*2, 4*1, np.array(pygame.time.get_ticks() / 1000.0, np.float32)))
+
+    @staticmethod
     def initialize():
         if Shader.uproj is not None: return
 
         Shader.uproj = UniformBlock('projectionViewMatrices', 4*16*3)
         Shader.umodel = UniformBlock('modelMatrices', 4*16*1)
+        Shader.uplayer = UniformBlock('player', 4*3)
 
         for i in range(2):
             glEnableVertexAttribArray(i)

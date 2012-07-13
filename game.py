@@ -114,6 +114,7 @@ class Game(object):
 
         Shader.upload_projection_view(self.projection, view)
         Shader.upload_model(model)
+        Shader.upload_player(self.player)
 
         with self.fbo as frame:
             frame.clear(0,1,1,1)
