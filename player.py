@@ -34,16 +34,27 @@ class Player(object):
             self.jumping -= 25.0
 
         self.vel.y += acc * dt
-        p = self.pos.copy()
-        p += self.vel
 
+        # handle vertical
         self.in_air = True
-        if map.tile_at(p) <= 1:
-            self.pos = p
+        t1 = map.tile_at(self.pos + Vector2f(0, self.vel.y))
+        t2 = map.tile_at(self.pos + Vector2f(0.999, self.vel.y))
+        if t1 <= 1 and t2 <= 1:
+            self.pos.y += self.vel.y
         else:
             self.in_air = False
             self.vel.y = 0
             self.pos.y = math.floor(self.pos.y)
+
+        # handle horizontal
+        t1 = map.tile_at(self.pos + Vector2f(self.vel.x, 0.01))
+        t2 = map.tile_at(self.pos + Vector2f(self.vel.x + 1.0, 0.01))
+        if t1 == 1 and t2 == 1:
+            self.pos.x += self.vel.x
+        elif self.vel.x < 0:
+            self.pos.x = math.floor(self.pos.x)
+        elif self.vel.x > 0:
+            self.pos.x = math.ceil(self.pos.x)
 
     def draw(self):
         model = Matrix.identity()

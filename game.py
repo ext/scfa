@@ -90,8 +90,9 @@ class Game(object):
     def update(self):
         key = pygame.key.get_pressed()
 
-        if key[97 ]: self.player.pos.x -= 0.15
-        if key[100]: self.player.pos.x += 0.15
+        self.player.vel.x = 0
+        if key[97 ]: self.player.vel.x = -0.15
+        if key[100]: self.player.vel.x =  0.15
 
         if key[260]: self.camera.x -= 0.1
         if key[262]: self.camera.x += 0.1
@@ -105,7 +106,10 @@ class Game(object):
         glClearColor(1,0,1,1)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
-        view = Matrix.lookat(self.camera.x, self.camera.y, 15, self.camera.x, self.camera.y, 0, 0,1,0)
+        view = Matrix.lookat(
+            self.player.pos.x, self.player.pos.y, 15,
+            self.player.pos.x, self.player.pos.y, 0,
+            0,1,0)
         model = Matrix.identity()
 
         Shader.upload_projection_view(self.projection, view)
