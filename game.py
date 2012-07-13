@@ -7,6 +7,7 @@ from OpenGL.GLU import *
 
 from vbo import VBO
 from fbo import FBO
+from shader import Shader
 from vector import Vector2i
 
 event_table = {}
@@ -43,6 +44,8 @@ class Game(object):
 
         self.fbo = FBO(Vector2i(100,100))
 
+        self.shader = Shader('derp')
+
     def running(self):
         return self._running
 
@@ -77,7 +80,9 @@ class Game(object):
 
         glColor4f(1,1,1,1)
         self.fbo.bind_texture()
+        self.shader.bind()
         self.test.draw()
+        Shader.unbind()
 
         pygame.display.flip()
 
