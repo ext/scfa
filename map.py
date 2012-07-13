@@ -45,6 +45,8 @@ class Map(object):
         ind = np.array(range(n*4), np.uint32)
         self.vbo = VBO(GL_QUADS, ver, ind)
 
+        self.grid = np.array(data['layers'][0]['data'], np.uint32)
+
     def draw(self, *args, **kwargs):
         self.texture.texture_bind()
         self.vbo.draw(*args, **kwargs)
