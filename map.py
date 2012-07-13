@@ -3,6 +3,7 @@ import os.path
 from OpenGL.GL import *
 from vbo import VBO
 from image import Image
+from shader import Shader, Matrix
 import numpy as np
 
 class Map(object):
@@ -48,6 +49,7 @@ class Map(object):
         self.grid = np.array(data['layers'][0]['data'], np.uint32)
 
     def draw(self, *args, **kwargs):
+        Shader.upload_model(Matrix.identity())
         self.texture.texture_bind()
         self.vbo.draw(*args, **kwargs)
 

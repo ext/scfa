@@ -8,7 +8,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 
 class Image(object):
-    def __init__(self, filename, filter=GL_LINEAR):
+    def __init__(self, filename, filter=GL_LINEAR, wrap=GL_CLAMP_TO_EDGE):
         self.id = glGenTextures(1)
 
         try:
@@ -24,8 +24,8 @@ class Image(object):
 
             self.texture_bind()
             glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, surface.get_width(), surface.get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap)
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter)
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter)
         except Exception, e:

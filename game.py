@@ -43,7 +43,6 @@ class Game(object):
         self.projection = Matrix.perspective(75, size, 0.1, 100)
         self.ortho = Matrix.ortho(size)
 
-        # parallax
         v = np.array([
                 0,0,0, 0,0,
                 1,0,0, 1,0,
@@ -52,7 +51,17 @@ class Game(object):
                 ], np.float32)
         i = np.array([0,1,2,3], np.uint32)
         self.quad = VBO(GL_QUADS, v, i)
-        self.parallax = Image('texture/bg1.png')
+
+        # parallax
+        v = np.array([
+                0,0,0, 0,0,
+                1,0,0, 5,0,
+                1,1,0, 5,5,
+                0,1,0, 0,5,
+                ], np.float32)
+        i = np.array([0,1,2,3], np.uint32)
+        self.repquad = VBO(GL_QUADS, v, i)
+        self.parallax = Image('texture/bg1.png', wrap=GL_REPEAT)
 
         self.fbo = FBO(self.size, format=GL_RGB8, depth=True)
 
@@ -116,22 +125,33 @@ class Game(object):
             self.player.pos.x, self.player.pos.y, 15,
             self.player.pos.x, self.player.pos.y, 0,
             0,1,0)
-        ident = Matrix.identity()
 
         with self.fbo as frame:
-            Shader.upload_projection_view(self.projection, view)
-            Shader.upload_model(ident)
-            Shader.upload_player(self.player)
-
             frame.clear(0,0,1,1)
+
+            Shader.upload_projection_view(self.projection, view)
+            Shader.upload_player(self.player)
             self.shader.bind()
+
+            # parallax background
+            pm1 = Matrix.identity()
+            pm1[3,0] = self.player.pos.x * 0.5 - 25
+            pm1[3,1] = self.player.pos.y * 0.5 - 225
+            pm1[0,0] = 250.0
+            pm1[1,1] = 250.0
+            self.parallax.texture_bind()
+            Shader.upload_model(pm1)
+            self.repquad.draw()
+
+            Shader.upload_projection_view(self.projection, view)
+
             self.map.draw()
             self.player.draw()
 
         mat = Matrix.identity()
         mat[0,0] = self.size.x
         mat[1,1] = self.size.y
-        Shader.upload_projection_view(self.ortho, ident)
+        Shader.upload_projection_view(self.ortho, Matrix.identity())
         Shader.upload_model(mat)
 
         self.fbo.bind_texture()
