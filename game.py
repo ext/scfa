@@ -78,6 +78,10 @@ class Game(object):
         self.hud = HUD(Vector2i(500,100))
         self.font = self.hud.create_font(size=16)
 
+        self.land = pygame.mixer.Sound('data/sound/land.wav')
+        self.ding = pygame.mixer.Sound('data/sound/ding.wav')
+        self.eat = pygame.mixer.Sound('data/sound/eat.wav')
+
         self.set_stage(1)
         self.killfade = None
         self.killfade2 = 1.0 # fade amount
@@ -131,6 +135,7 @@ class Game(object):
 
             # so player keeps falling
             dt = 1.0 / self.clock.tick(60)
+            self.player.vel.y = 0
             self.player.update(dt, self.map)
 
             return
@@ -177,7 +182,7 @@ class Game(object):
             0,1,0)
 
         with self.fbo as frame:
-            frame.clear(0,0,1,1)
+            frame.clear(0,0.03,0.15,1)
 
             Shader.upload_projection_view(self.projection, view)
             Shader.upload_player(self.player)
@@ -245,6 +250,7 @@ class Game(object):
 
 def run():
     pygame.display.init()
+    pygame.mixer.init(buffer=1024)
     pygame.mouse.set_visible(False)
 
     game = Game()

@@ -26,6 +26,7 @@ class Player(object):
         self.have_ham = False
         self.have_cheese = False
         self.have_bread = False
+        self.is_killed = False
 
         v = np.array([
                 0,1,0, 0,1,
@@ -53,6 +54,9 @@ class Player(object):
         if walkable(t1) and walkable (t2):
             self.pos.y += self.vel.y
         else:
+            if self.vel.y < -0.4:
+                print 'landed'
+                game.land.play()
             self.in_air = False
             self.vel.y = 0
             self.pos.y = math.floor(self.pos.y)
@@ -76,9 +80,10 @@ class Player(object):
             self.dir = -1
 
         # kill players falling down the hole
-        if self.pos.y < -30 and self.pos.x >= 130 and self.pos.x <= 135:
+        if not self.is_killed and self.pos.y < -30 and self.pos.x >= 130 and self.pos.x <= 135:
             game.message('player was killed while jumping down a hole')
             game.over()
+            self.is_killed = True
 
         if self.hp <= 0.0001:
             game.message('player got lost in the woods and died')

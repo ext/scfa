@@ -31,11 +31,20 @@ class Food(Item):
         self.hp = 35
         self.texture = image.load('texture/apple.png')
 
+    def kill(self):
+        Item.kill(self)
+        game.eat.play()
+
 class Schebab(Item):
     def __init__(self, **kwargs):
         Item.__init__(self, **kwargs)
         self.hp = 50
         self.texture = image.load('texture/kebab.png')
+
+    def kill(self):
+        Item.kill(self)
+        game.eat.play()
+
 
 class QuestItem(Item):
     def __init__(self, properties, **kwargs):
@@ -45,6 +54,7 @@ class QuestItem(Item):
 
     def kill(self):
         Item.kill(self)
+        game.ding.play()
 
         if self.name == 'key':
             game.message('Picked up chainsaw key, hurry back home')
