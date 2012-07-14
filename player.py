@@ -87,9 +87,10 @@ class Player(object):
             game.over()
             self.is_killed = True
 
-        if self.hp <= 0.0001:
+        if not self.is_killed and self.hp <= 0.0001:
             game.message('player got lost in the woods and died')
             game.over()
+            self.is_killed = True
 
         # subtract health
         d = (self.pos - Vector2f(53,-8)).length()

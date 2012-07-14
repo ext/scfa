@@ -235,7 +235,6 @@ class Game(object):
             Shader.upload_model(pm1)
             self.repquad.draw()
 
-
         mat = Matrix.identity()
         mat[0,0] = self.size.x
         mat[1,1] = self.size.y
