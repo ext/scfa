@@ -76,8 +76,8 @@ class Game(object):
         self.clock = pygame.time.Clock()
 
         self.set_stage(1)
-        self.set_stage(2)
-
+        self.killfade = None
+        self.killfade2 = 1.0 # fade amount
 
     def running(self):
         return self._running
@@ -110,6 +110,17 @@ class Game(object):
             func(self, event)
 
     def update(self):
+        if self.killfade is not None:
+            t = pygame.time.get_ticks() / 1000.0
+            s = (t - self.killfade) / 2.5
+            self.killfade2 = 1.0 - s
+            print t, self.killfade, s
+
+            if s > 1.0:
+                self.quit()
+
+            return
+
         key = pygame.key.get_pressed()
 
         self.player.vel.x = 0
@@ -193,6 +204,9 @@ class Game(object):
         elif n == 3:
             self.map.pickups.extend(self.map.obj3)
 
+    def over(self):
+        self.killfade = pygame.time.get_ticks() / 1000.0
+
 def run():
     pygame.display.init()
     pygame.mouse.set_visible(False)
@@ -202,7 +216,7 @@ def run():
     # superglobals for quick access
     __builtins__['game'] = game
 
-    game.init(Vector2i(1024,768), fullscreen=True)
+    game.init(Vector2i(1024,768), fullscreen=False)
     game.run()
 
     # force deallocation

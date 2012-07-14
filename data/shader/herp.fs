@@ -16,6 +16,6 @@ void main(){
 
 	float noise = 1.0f - clamp(rand(uv + vec2(time, time*2)) * 0.4, 0.0, 0.7);
 
-	ocolor.rgb = texel * r * noise;
+	ocolor.rgb = texel * r * noise * fade;
 	ocolor.a = 1.0f;
 }

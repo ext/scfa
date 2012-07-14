@@ -69,6 +69,15 @@ class Player(object):
         elif self.vel.x < 0:
             self.dir = -1
 
+        # kill players falling down the hole
+        if self.pos.y < -30 and self.pos.x >= 130 and self.pos.x <= 135:
+            game.message('player was killed while jumping down a hole')
+            game.over()
+
+        if self.hp <= 0.0001:
+            game.message('player got lost in the woods and died')
+            game.over()
+
         # subtract health
         d = (self.pos - Vector2f(53,-8)).length()
         d2 = (self.pos - Vector2f(354,-18)).length()
