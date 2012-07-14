@@ -13,5 +13,19 @@
   <object name="asdf" type="food" x="816" y="152" width="8" height="8"/>
   <object name="Gnocchi" type="food" x="1136" y="120" width="8" height="8"/>
   <object name="Gnocchi" type="food" x="1808" y="144" width="8" height="8"/>
+  <object name="key" type="key" x="1840" y="176" width="8" height="8">
+   <properties>
+    <property name="texture" value="texture/key.png"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#aa0000" name="Object Layer 2" width="550" height="36">
+  <object name="Gnocchi" type="food" x="1424" y="104" width="8" height="8"/>
+  <object name="Gnocchi" type="food" x="512" y="64" width="8" height="8"/>
+  <object name="chainsaw" type="key" x="424" y="64" width="8" height="8">
+   <properties>
+    <property name="texture" value="texture/chainsaw.png"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

@@ -69,10 +69,8 @@ class Player(object):
         elif self.vel.x < 0:
             self.dir = -1
 
-        self.hp -= 1 * dt
+        self.hp -= 1.7 * dt
         self.hp_ratio = max(float(self.hp) / Player.max_hp, 0.0)
-
-        print self.hp_ratio
 
     def draw(self):
         model = Matrix.identity()
@@ -104,5 +102,5 @@ class Player(object):
             if max.x < omin.x or min2.x > omax.x: continue
             if max.y < omin.y or min2.y > omax.y: continue
 
-            obj.killed = True
+            obj.kill()
             self.hp = min(self.hp + 35, Player.max_hp)

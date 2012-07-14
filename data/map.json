@@ -63,6 +63,66 @@
                  "width":8,
                  "x":1808,
                  "y":144
+                }, 
+                {
+                 "height":8,
+                 "name":"key",
+                 "properties":
+                    {
+                     "texture":"texture\/key.png"
+                    },
+                 "type":"key",
+                 "width":8,
+                 "x":1840,
+                 "y":176
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":550,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "color":"#aa0000",
+         "height":36,
+         "name":"Object Layer 2",
+         "objects":[
+                {
+                 "height":8,
+                 "name":"Gnocchi",
+                 "properties":
+                    {
+
+                    },
+                 "type":"food",
+                 "width":8,
+                 "x":1424,
+                 "y":104
+                }, 
+                {
+                 "height":8,
+                 "name":"Gnocchi",
+                 "properties":
+                    {
+
+                    },
+                 "type":"food",
+                 "width":8,
+                 "x":512,
+                 "y":64
+                }, 
+                {
+                 "height":8,
+                 "name":"chainsaw",
+                 "properties":
+                    {
+                     "texture":"texture\/chainsaw.png"
+                    },
+                 "type":"key",
+                 "width":8,
+                 "x":424,
+                 "y":64
                 }],
          "opacity":1,
          "type":"objectgroup",

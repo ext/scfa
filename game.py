@@ -40,6 +40,7 @@ class Game(object):
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA)
 
+        self.stage = 1
         self.projection = Matrix.perspective(75, size, 0.1, 100)
         self.ortho = Matrix.ortho(size)
 
@@ -73,6 +74,8 @@ class Game(object):
         self.map = Map('map.json')
         self.player = Player(Vector2f(55,-9))
         self.clock = pygame.time.Clock()
+
+        self.set_stage(1)
 
     def running(self):
         return self._running
@@ -177,15 +180,25 @@ class Game(object):
             self.update()
             self.render()
 
+    def message(self, text):
+        print text
+
+    def set_stage(self, n):
+        if n == 1:
+            self.map.pickups.extend(self.map.obj1)
+        elif n == 2:
+            self.map.pickups.extend(self.map.obj2)
+
 def run():
     pygame.display.init()
+    pygame.mouse.set_visible(False)
 
     game = Game()
 
     # superglobals for quick access
     __builtins__['game'] = game
 
-    game.init(Vector2i(1024,768))
+    game.init(Vector2i(1920,1080), fullscreen=True)
     game.run()
 
     # force deallocation
