@@ -74,5 +74,10 @@ class QuestItem(Item):
             Player.max_hp *= 1.5
             game.player.hp = Player.max_hp
             game.player.have_bread = True
+        elif self.name == 'cheese':
+            game.message('Picked up cheese')
+            Player.max_hp *= 1.5
+            game.player.hp = Player.max_hp
+            game.player.have_cheese = True
         else:
             raise ValueError, 'unknown questitem %s' % self.name

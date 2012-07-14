@@ -26,7 +26,9 @@ class Player(object):
         self.have_ham = False
         self.have_cheese = False
         self.have_bread = False
+        self.have_sandwich = False
         self.is_killed = False
+        self.derp = False
 
         v = np.array([
                 0,1,0, 0,1,
@@ -55,7 +57,6 @@ class Player(object):
             self.pos.y += self.vel.y
         else:
             if self.vel.y < -0.4:
-                print 'landed'
                 game.land.play()
             self.in_air = False
             self.vel.y = 0
@@ -93,7 +94,8 @@ class Player(object):
         d = (self.pos - Vector2f(53,-8)).length()
         d2 = (self.pos - Vector2f(354,-18)).length()
         d3 = (self.pos - Vector2f(200,-48)).length()
-        if d >= 14.0 and d2 >= 14.0 and d3 >= 20.0:
+        d4 = (self.pos - Vector2f(384,-87)).length()
+        if d >= 14.0 and d2 >= 14.0 and d3 >= 20.0 and d4 >= 20.0:
             self.hp -= 1.7 * dt
         else:
             self.hp += 1.7 * dt
@@ -101,12 +103,21 @@ class Player(object):
         self.hp = min(max(self.hp, 0.0), Player.max_hp)
         self.hp_ratio = float(self.hp) / Player.max_hp
 
+        # test if possible to make sandwhich (without sudo)
+        if d < 2 and self.have_cheese and self.have_ham and self.have_bread and not self.have_sandwich:
+            game.message('Sandwich made')
+            self.have_sandwich = True
+
         # check cave
         dc = (self.pos - Vector2f(354,-18)).length()
-        if dc < 2.0:
+        if dc < 2.0 and not self.derp:
             if not self.cave_visited:
-                game.message('Dwarf: Hey there, could you fetch me a sandwich?')
-                self.cave_visited = True
+                if self.have_sandwich:
+                    game.message('Dward: om nom nom, thank you for the sandwich')
+                    self.derp = True
+                else:
+                    game.message('Dwarf: Hey there, could you fetch me a sandwich?')
+                    self.cave_visited = True
         elif dc > 30.0:
             self.cave_visited = False
 

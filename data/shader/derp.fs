@@ -21,11 +21,15 @@ void main(){
 	float d4 = length(w_pos.xy - vec2(200,-48));
 	float l4 = clamp(1.0f-d4/20.0f, 0.0f, 1.0f);
 
+	float d5 = length(w_pos.xy - vec2(384,-87));
+	float l5 = clamp(1.0f-d5/20.0f, 0.0f, 1.0f);
+
 	float m = mix(dark, light, hp);
 	vec4 texel = texture2D(texture0, uv);
 	ocolor =  vec4(texel.rgb * m +
 	               vec3(texel.r*l2, texel.gb*l2*0.7) +
 	               vec3(texel.r*l3, texel.g*l3*0.6, texel.b*l3*0.4) +
-	               vec3(texel.r*l4*1.5, texel.g*l4*0.4, texel.b*l4*0.3)
+	               vec3(texel.r*l4*1.5, texel.g*l4*0.4, texel.b*l4*0.3) +
+	               vec3(texel.r*l5*1.5, texel.g*l5*0.4, texel.b*l5*0.3)
 	               , texel.a);
 }
