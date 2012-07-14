@@ -22,6 +22,10 @@ class Player(object):
         self.hp = Player.max_hp
         self.hp_ratio = 0.8
         self.dir = 1
+        self.cave_visited = False
+        self.have_ham = False
+        self.have_cheese = False
+        self.have_bread = False
 
         v = np.array([
                 0,1,0, 0,1,
@@ -91,6 +95,15 @@ class Player(object):
 
         self.hp = min(max(self.hp, 0.0), Player.max_hp)
         self.hp_ratio = float(self.hp) / Player.max_hp
+
+        # check cave
+        dc = (self.pos - Vector2f(354,-18)).length()
+        if dc < 2.0:
+            if not self.cave_visited:
+                game.message('Dwarf: Hey there, could you fetch me a sandwich?')
+                self.cave_visited = True
+        elif dc > 30.0:
+            self.cave_visited = False
 
     def draw(self):
         model = Matrix.identity()

@@ -83,7 +83,7 @@ class Game(object):
         self.killfade2 = 1.0 # fade amount
         self.textbuf = []
         self.texttime = -10.0
-        self.message('Welcome adventurer!\nYou can start exploring the world but beware of wandering away too far.')
+        self.message('<b>Welcome adventurer!</b>\nYou can start exploring the world but beware of wandering away too far.')
         self.message('When outside of lights your <i>HP</i> will drain and you will get lost in the woods.')
         self.message('Eat food to temporary increase your <i>HP</i>.')
 
@@ -125,10 +125,13 @@ class Game(object):
             t = pygame.time.get_ticks() / 1000.0
             s = (t - self.killfade) / 2.5
             self.killfade2 = 1.0 - s
-            print t, self.killfade, s
 
             if s > 1.0:
                 self.quit()
+
+            # so player keeps falling
+            dt = 1.0 / self.clock.tick(60)
+            self.player.update(dt, self.map)
 
             return
 
