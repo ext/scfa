@@ -87,6 +87,9 @@ class Game(object):
         self.land = pygame.mixer.Sound('data/sound/land.wav')
         self.ding = pygame.mixer.Sound('data/sound/ding.wav')
         self.eat = pygame.mixer.Sound('data/sound/eat.wav')
+        self.wind = pygame.mixer.Sound('data/sound/wind.wav')
+
+        self.wind.play(loops=-1)
 
         self.set_stage(1)
         self.killfade = None
@@ -285,7 +288,7 @@ class Game(object):
 
 def run():
     pygame.display.init()
-    pygame.mixer.init(buffer=1024)
+    pygame.mixer.init(channels=3, buffer=1024)
     pygame.mouse.set_visible(False)
 
     game = Game()
