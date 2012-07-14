@@ -28,12 +28,19 @@ class Item(object):
 class Food(Item):
     def __init__(self, **kwargs):
         Item.__init__(self, **kwargs)
+        self.hp = 35
         self.texture = image.load('texture/apple.png')
+
+class Schebab(Item):
+    def __init__(self, **kwargs):
+        Item.__init__(self, **kwargs)
+        self.hp = 50
+        self.texture = image.load('texture/kebab.png')
 
 class QuestItem(Item):
     def __init__(self, properties, **kwargs):
         Item.__init__(self, **kwargs)
-        print properties
+        self.hp = 25
         self.texture = image.load(properties['texture'])
 
     def kill(self):

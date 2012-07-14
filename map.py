@@ -4,7 +4,7 @@ from OpenGL.GL import *
 from vbo import VBO
 from image import Image
 from shader import Shader, Matrix
-from item import Food, QuestItem
+from item import *
 import numpy as np
 
 class Map(object):
@@ -52,6 +52,7 @@ class Map(object):
         # load objects
         self.obj1 = list(self.twiddle(data['layers'][1]['objects']))
         self.obj2 = list(self.twiddle(data['layers'][2]['objects']))
+        self.obj3 = list(self.twiddle(data['layers'][3]['objects']))
 
         self.pickups = []
 
@@ -60,6 +61,7 @@ class Map(object):
         for obj in src:
             t = obj['type']
             if t == 'food': item = Food(**obj)
+            elif t == 'kebab': item = Schebab(**obj)
             elif t == 'key': item = QuestItem(**obj)
             else: raise ValueError, 'unknown type %s' % t
             yield item

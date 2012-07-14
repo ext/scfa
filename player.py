@@ -71,7 +71,8 @@ class Player(object):
 
         # subtract health
         d = (self.pos - Vector2f(53,-8)).length()
-        if d >= 14.0:
+        d2 = (self.pos - Vector2f(354,-18)).length()
+        if d >= 14.0 and d2 >= 14.0:
             self.hp -= 1.7 * dt
         else:
             self.hp += 1.7 * dt
@@ -109,5 +110,5 @@ class Player(object):
             if max.x < omin.x or min2.x > omax.x: continue
             if max.y < omin.y or min2.y > omax.y: continue
 
+            self.hp = min(self.hp + obj.hp, Player.max_hp)
             obj.kill()
-            self.hp = min(self.hp + 35, Player.max_hp)

@@ -76,6 +76,8 @@ class Game(object):
         self.clock = pygame.time.Clock()
 
         self.set_stage(1)
+        self.set_stage(2)
+
 
     def running(self):
         return self._running
@@ -188,6 +190,8 @@ class Game(object):
             self.map.pickups.extend(self.map.obj1)
         elif n == 2:
             self.map.pickups.extend(self.map.obj2)
+        elif n == 3:
+            self.map.pickups.extend(self.map.obj3)
 
 def run():
     pygame.display.init()
@@ -198,7 +202,7 @@ def run():
     # superglobals for quick access
     __builtins__['game'] = game
 
-    game.init(Vector2i(1024,768), fullscreen=False)
+    game.init(Vector2i(1024,768), fullscreen=True)
     game.run()
 
     # force deallocation
