@@ -83,6 +83,7 @@ class HUD:
 
     def __enter__(self):
         self.cr.save()
+        return self
 
     def __exit__(self, type, value, traceback):
         if type is None:

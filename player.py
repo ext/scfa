@@ -23,6 +23,7 @@ class Player(object):
         self.hp_ratio = 0.8
         self.dir = 1
         self.cave_visited = False
+        self.cave_quest = False
         self.have_ham = False
         self.have_cheese = False
         self.have_bread = False
@@ -82,7 +83,7 @@ class Player(object):
 
         # kill players falling down the hole
         if not self.is_killed and self.pos.y < -30 and self.pos.x >= 130 and self.pos.x <= 135:
-            game.message('player was killed while jumping down a hole')
+            game.message('Player was killed while jumping down a hole')
             game.over()
             self.is_killed = True
 
@@ -95,10 +96,10 @@ class Player(object):
         d2 = (self.pos - Vector2f(354,-18)).length()
         d3 = (self.pos - Vector2f(200,-48)).length()
         d4 = (self.pos - Vector2f(384,-87)).length()
-        if d >= 14.0 and d2 >= 14.0 and d3 >= 20.0 and d4 >= 20.0:
+        if d >= 14.0 and d2 >= 14.0 and d3 >= 17.0 and d4 >= 20.0:
             self.hp -= 1.7 * dt
         else:
-            self.hp += 1.7 * dt
+            self.hp += (Player.max_hp / 100.0) * dt
 
         self.hp = min(max(self.hp, 0.0), Player.max_hp)
         self.hp_ratio = float(self.hp) / Player.max_hp
@@ -114,10 +115,14 @@ class Player(object):
             if not self.cave_visited:
                 if self.have_sandwich:
                     game.message('Dward: om nom nom, thank you for the sandwich')
+                    game.message('Quest finished: "Make me a sandwich".')
                     self.derp = True
                 else:
                     game.message('Dwarf: Hey there, could you fetch me a sandwich?')
                     self.cave_visited = True
+                    if not self.cave_quest:
+                        game.message('Quest started: "Make me a sandwich".')
+                        self.cave_quest = True
         elif dc > 30.0:
             self.cave_visited = False
 

@@ -13,6 +13,7 @@ from map import Map
 from player import Player
 from image import Image
 from hud import HUD, ALIGN_CENTER
+import math
 
 event_table = {}
 def event(type):
@@ -76,7 +77,9 @@ class Game(object):
         self.player = Player(Vector2f(55,-9))
         self.clock = pygame.time.Clock()
         self.hud = HUD(Vector2i(500,100))
+        self.hpmeter = HUD(Vector2i(20, 500))
         self.font = self.hud.create_font(size=16)
+        self.font2 = self.hud.create_font(size=12)
 
         self.land = pygame.mixer.Sound('data/sound/land.wav')
         self.ding = pygame.mixer.Sound('data/sound/ding.wav')
@@ -90,6 +93,8 @@ class Game(object):
         self.message('<b>Welcome adventurer!</b>\nYou can start exploring the world but beware of wandering away too far.')
         self.message('When outside of lights your <i>HP</i> will drain and you will get lost in the woods.')
         self.message('Eat food to temporary increase your <i>HP</i>.')
+        self.message('Quest started: "Find the chainsaw".')
+        self.message('Quest started: "Frobnicate something".')
 
         with self.hud:
             self.hud.clear((0,1,1,1))
@@ -160,6 +165,16 @@ class Game(object):
         glClearColor(1,0,1,1)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
+        with self.hpmeter as hud:
+            hud.clear((0.3,0,0,1))
+            hud.cr.identity_matrix()
+
+            hud.rectangle(0,0, hud.width, hud.height * self.player.hp_ratio, (0,0.3,0,1))
+
+            hud.cr.translate(18,0)
+            hud.cr.rotate(math.pi*0.5)
+            hud.text(' Energy: %d / %d' % (int(math.ceil(self.player.hp/10)) * 10, Player.max_hp), self.font2, color=(1,0.8,0,1))
+
         with self.hud:
             self.hud.clear((0,0,0,0))
             self.hud.cr.identity_matrix()
@@ -217,11 +232,18 @@ class Game(object):
         self.herp.bind()
         self.quad.draw()
 
+        # messagebox
         mat = Matrix.identity()
         mat[3,0] = self.size.x / 2 - self.hud.width / 2
         mat[3,1] = self.size.y - self.hud.height
         Shader.upload_model(mat)
         self.hud.draw()
+
+        # hpmeter
+        mat = Matrix.identity()
+        mat[3,1] = self.size.y / 2 - self.hpmeter.height / 2
+        Shader.upload_model(mat)
+        self.hpmeter.draw()
 
         Shader.unbind()
 

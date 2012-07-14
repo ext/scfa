@@ -56,28 +56,34 @@ class QuestItem(Item):
         Item.kill(self)
         game.ding.play()
 
+        qn = len([x for x in [game.player.have_ham, game.player.have_bread, game.player.have_cheese] if x])
+
         if self.name == 'key':
             game.message('Picked up chainsaw key, hurry back home')
             game.set_stage(2)
         elif self.name == 'chainsaw':
             game.message('Picked up monster-ultra-food chainsaw 2000')
+            game.message('Quest finished: "Find the chainsaw".')
             game.set_stage(3)
             Player.max_hp *= 2.0
             game.player.hp = Player.max_hp
         elif self.name == 'ham':
-            game.message('Picked up ham')
+            game.message('Acquired questitem [%d/3]: Ham' % (qn+1))
             Player.max_hp *= 1.5
             game.player.hp = Player.max_hp
             game.player.have_ham = True
         elif self.name == 'bread':
-            game.message('Picked up bread')
+            game.message('Acquired questitem [%d/3]: Bread' % (qn+1))
             Player.max_hp *= 1.5
             game.player.hp = Player.max_hp
             game.player.have_bread = True
         elif self.name == 'cheese':
-            game.message('Picked up cheese')
+            game.message('Acquired questitem [%d/3]: Cheese' % (qn+1))
             Player.max_hp *= 1.5
             game.player.hp = Player.max_hp
             game.player.have_cheese = True
+        elif self.name == 'something':
+            game.message('Something has been frobnicated')
+            game.message('Quest finished: "Frobnicate something".')
         else:
             raise ValueError, 'unknown questitem %s' % self.name
