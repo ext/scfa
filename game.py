@@ -68,6 +68,7 @@ class Game(object):
 
         self.shader = Shader('derp')
         self.passthru = Shader('passtru')
+        self.herp = Shader('herp')
 
         self.map = Map('map.json')
         self.player = Player(Vector2f(55,-9))
@@ -162,7 +163,7 @@ class Game(object):
         Shader.upload_model(mat)
 
         self.fbo.bind_texture()
-        self.passthru.bind()
+        self.herp.bind()
         self.quad.draw()
 
         Shader.unbind()
