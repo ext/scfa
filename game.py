@@ -12,6 +12,7 @@ from vector import Vector2i, Vector2f
 from map import Map
 from player import Player
 from image import Image
+from hud import HUD, ALIGN_CENTER
 
 event_table = {}
 def event(type):
@@ -74,10 +75,20 @@ class Game(object):
         self.map = Map('map.json')
         self.player = Player(Vector2f(55,-9))
         self.clock = pygame.time.Clock()
+        self.hud = HUD(Vector2i(500,100))
+        self.font = self.hud.create_font(size=16)
 
         self.set_stage(1)
         self.killfade = None
         self.killfade2 = 1.0 # fade amount
+        self.textbuf = []
+        self.texttime = -10.0
+        self.message('Welcome adventurer!\nYou can start exploring the world but beware of wandering away too far.')
+        self.message('When outside of lights your <i>HP</i> will drain and you will get lost in the woods.')
+        self.message('Eat food to temporary increase your <i>HP</i>.')
+
+        with self.hud:
+            self.hud.clear((0,1,1,1))
 
     def running(self):
         return self._running
@@ -141,6 +152,22 @@ class Game(object):
         glClearColor(1,0,1,1)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
+        with self.hud:
+            self.hud.clear((0,0,0,0))
+            self.hud.cr.identity_matrix()
+
+            t = pygame.time.get_ticks() / 1000.0
+            s = (t - self.texttime) / 6.0
+
+            if s > 1.0:
+                if len(self.textbuf) > 0:
+                    self.texttime = pygame.time.get_ticks() / 1000.0
+                    self.text = self.textbuf.pop(0)
+            else:
+                a = min(1.0-s, 0.2) * 5
+                self.hud.cr.translate(0,25)
+                self.hud.text(self.text, self.font, color=(1,0.8,0,a), width=self.hud.width, alignment=ALIGN_CENTER)
+
         view = Matrix.lookat(
             self.player.pos.x, self.player.pos.y+7, 15,
             self.player.pos.x, self.player.pos.y+7, 0,
@@ -182,6 +209,12 @@ class Game(object):
         self.herp.bind()
         self.quad.draw()
 
+        mat = Matrix.identity()
+        mat[3,0] = self.size.x / 2 - self.hud.width / 2
+        mat[3,1] = self.size.y - self.hud.height
+        Shader.upload_model(mat)
+        self.hud.draw()
+
         Shader.unbind()
 
         pygame.display.flip()
@@ -194,7 +227,7 @@ class Game(object):
             self.render()
 
     def message(self, text):
-        print text
+        self.textbuf.append(text)
 
     def set_stage(self, n):
         if n == 1:

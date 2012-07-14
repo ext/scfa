@@ -83,7 +83,8 @@ class Player(object):
         # subtract health
         d = (self.pos - Vector2f(53,-8)).length()
         d2 = (self.pos - Vector2f(354,-18)).length()
-        if d >= 14.0 and d2 >= 14.0:
+        d3 = (self.pos - Vector2f(200,-48)).length()
+        if d >= 14.0 and d2 >= 14.0 and d3 >= 20.0:
             self.hp -= 1.7 * dt
         else:
             self.hp += 1.7 * dt
