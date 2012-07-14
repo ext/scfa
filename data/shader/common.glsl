@@ -32,6 +32,7 @@ layout(std140) uniform modelMatrices {
 
 layout(std140) uniform player {
 	vec2 player_pos;
+	vec2 house_pos;
 	float time;
 	float hp;
 };

@@ -69,8 +69,15 @@ class Player(object):
         elif self.vel.x < 0:
             self.dir = -1
 
-        self.hp -= 1.7 * dt
-        self.hp_ratio = max(float(self.hp) / Player.max_hp, 0.0)
+        # subtract health
+        d = (self.pos - Vector2f(53,-8)).length()
+        if d >= 14.0:
+            self.hp -= 1.7 * dt
+        else:
+            self.hp += 1.7 * dt
+
+        self.hp = min(max(self.hp, 0.0), Player.max_hp)
+        self.hp_ratio = float(self.hp) / Player.max_hp
 
     def draw(self):
         model = Matrix.identity()

@@ -198,7 +198,7 @@ def run():
     # superglobals for quick access
     __builtins__['game'] = game
 
-    game.init(Vector2i(1920,1080), fullscreen=True)
+    game.init(Vector2i(1024,768), fullscreen=False)
     game.run()
 
     # force deallocation
