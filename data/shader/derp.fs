@@ -19,7 +19,7 @@ void main(){
 	float l3 = clamp(1.0f-d3/12.0f, 0.0f, 1.0f);
 
 	float d4 = length(w_pos.xy - vec2(200,-48));
-	float l4 = clamp(1.0f-d4/20.0f, 0.0f, 1.0f);
+	float l4 = clamp(1.0f-d4/20.0f, 0.0f, 1.0f) * clamp((sin(time*3.2) + 1.3)*0.5, 0.5, 1.2);
 
 	float d5 = length(w_pos.xy - vec2(384,-87));
 	float l5 = clamp(1.0f-d5/20.0f, 0.0f, 1.0f);
@@ -29,7 +29,7 @@ void main(){
 	ocolor =  vec4(texel.rgb * m +
 	               vec3(texel.r*l2, texel.gb*l2*0.7) +
 	               vec3(texel.r*l3, texel.g*l3*0.6, texel.b*l3*0.4) +
-	               vec3(texel.r*l4*1.5, texel.g*l4*0.4, texel.b*l4*0.3) +
-	               vec3(texel.r*l5*1.5, texel.g*l5*0.4, texel.b*l5*0.3)
+	               vec3(texel.r*l4*1.6, texel.g*l4*0.4, texel.b*l4*0.3) +
+	               vec3(texel.r*l5*1.6, texel.g*l5*0.4, texel.b*l5*0.3)
 	               , texel.a);
 }

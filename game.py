@@ -32,9 +32,11 @@ class Game(object):
         if fullscreen:
             flags |= FULLSCREEN
 
-        self.size = size
         pygame.display.set_mode(size.xy, flags)
         pygame.display.set_caption('nox II gamedev entry')
+
+        i = pygame.display.Info()
+        self.size = Vector2i(i.current_w, i.current_h)
 
         glMatrixMode(GL_MODELVIEW)
         glEnable(GL_TEXTURE_2D)
@@ -43,8 +45,8 @@ class Game(object):
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA)
 
         self.stage = 1
-        self.projection = Matrix.perspective(75, size, 0.1, 100)
-        self.ortho = Matrix.ortho(size)
+        self.projection = Matrix.perspective(75, self.size, 0.1, 100)
+        self.ortho = Matrix.ortho(self.size)
 
         v = np.array([
                 0,0,0, 0,0,
@@ -56,7 +58,7 @@ class Game(object):
         self.quad = VBO(GL_QUADS, v, i)
 
         # parallax
-        self.parallax_rep = 10
+        self.parallax_rep = 25
         v = np.array([
                 0,0,0, 0,1,
                 1,0,0, self.parallax_rep, 1,
@@ -66,6 +68,7 @@ class Game(object):
         i = np.array([0,1,2,3], np.uint32)
         self.repquad = VBO(GL_QUADS, v, i)
         self.parallax = Image('texture/sky.png', wrap=GL_REPEAT)
+        self.parallax2 = Image('texture/sky2.png', wrap=GL_REPEAT)
 
         self.fbo = FBO(self.size, format=GL_RGB8, depth=True)
 
@@ -180,7 +183,7 @@ class Game(object):
             self.hud.cr.identity_matrix()
 
             t = pygame.time.get_ticks() / 1000.0
-            s = (t - self.texttime) / 6.0
+            s = (t - self.texttime) / 4.0
 
             if s > 1.0:
                 if len(self.textbuf) > 0:
@@ -221,6 +224,17 @@ class Game(object):
             for obj in self.map.pickups:
                 obj.draw(self.quad)
             self.player.draw()
+
+            # parallax 2
+            pm1 = Matrix.identity()
+            pm1[3,0] = self.player.pos.x * -2.0 + 100
+            pm1[3,1] = self.player.pos.y * 0.5 - 45 * 3 + 10
+            pm1[0,0] = 45.0 * self.parallax_rep * 3
+            pm1[1,1] = 45 * 3
+            self.parallax2.texture_bind()
+            Shader.upload_model(pm1)
+            self.repquad.draw()
+
 
         mat = Matrix.identity()
         mat[0,0] = self.size.x
@@ -280,7 +294,7 @@ def run():
     # superglobals for quick access
     __builtins__['game'] = game
 
-    game.init(Vector2i(1024,768), fullscreen=False)
+    game.init(Vector2i(0,0), fullscreen=True)
     game.run()
 
     # force deallocation
