@@ -14,6 +14,8 @@ void main(){
 	int x = int(uv.x * 300);
 	float r = min(min(rand(vec2(float(x)/300, time)), 0.03) * 32 + 0.7, 1.0);
 
-	ocolor.rgb = texel * r;
+	float noise = 1.0f - clamp(rand(uv + vec2(time, time*2)) * 0.4, 0.0, 0.7);
+
+	ocolor.rgb = texel * r * noise;
 	ocolor.a = 1.0f;
 }
