@@ -52,6 +52,8 @@ class Player(object):
             self.in_air = False
             self.vel.y = 0
             self.pos.y = math.floor(self.pos.y)
+            if not walkable(map.tile_at(self.pos+Vector2f(0,0.1))):
+                self.pos.y += 1
 
         # handle horizontal
         t1 = map.tile_at(self.pos + Vector2f(self.vel.x, 0.01))
