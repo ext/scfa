@@ -53,7 +53,7 @@ class Game(object):
         self.quad = VBO(GL_QUADS, v, i)
 
         # parallax
-        self.parallax_rep = 5
+        self.parallax_rep = 10
         v = np.array([
                 0,0,0, 0,1,
                 1,0,0, self.parallax_rep, 1,
