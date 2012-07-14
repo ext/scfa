@@ -33,7 +33,7 @@ class Game(object):
             flags |= FULLSCREEN
 
         pygame.display.set_mode(size.xy, flags)
-        pygame.display.set_caption('nox II gamedev entry')
+        pygame.display.set_caption('Super Chainsaw Food Adventure')
 
         i = pygame.display.Info()
         self.size = Vector2i(i.current_w, i.current_h)
