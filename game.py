@@ -139,7 +139,7 @@ class Game(object):
 
             # parallax background
             pm1 = Matrix.identity()
-            pm1[3,0] = self.player.pos.x * 0.5 - 20
+            pm1[3,0] = self.player.pos.x * 0.35 - 20
             pm1[3,1] = self.player.pos.y * 0.5 - 20
             pm1[0,0] = 42.0 * self.parallax_rep
             pm1[1,1] = 42.0
