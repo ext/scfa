@@ -21,6 +21,7 @@ class Player(object):
         self.jumping = 0
         self.hp = Player.max_hp
         self.hp_ratio = 0.8
+        self.dir = 1
 
         v = np.array([
                 0,1,0, 0,1,
@@ -62,6 +63,12 @@ class Player(object):
         elif self.vel.x > 0:
             self.pos.x = math.ceil(self.pos.x)
 
+        # flip direction
+        if self.vel.x > 0:
+            self.dir = 1
+        elif self.vel.x < 0:
+            self.dir = -1
+
         self.hp -= 1 * dt
         self.hp_ratio = max(float(self.hp) / Player.max_hp, 0.0)
 
@@ -71,8 +78,9 @@ class Player(object):
         model = Matrix.identity()
 
         # translate
-        model[3,0] = self.pos.x
+        model[3,0] = self.pos.x + (self.dir == -1 and 1.0 or 0.0)
         model[3,1] = self.pos.y
+        model[0,0] = self.dir
 
         Shader.upload_model(model)
         self.texture.texture_bind()
@@ -87,8 +95,8 @@ class Player(object):
         self.jumping = 0
 
     def frobnicate(self, stuff):
-        min2 = self.pos
-        max = self.pos + Vector2f(1,2)
+        min2 = self.pos + Vector2f(0.25,0)
+        max = self.pos + Vector2f(0.75,2)
         for obj in stuff:
             omin = obj.pos
             omax = obj.pos + Vector2f(1,1)
